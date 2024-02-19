@@ -14,18 +14,42 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.firstcomposeproject.domain.FeedPost
 import com.example.firstcomposeproject.domain.StatisticType
-import com.example.firstcomposeproject.presentation.main.MainViewModel
 import com.example.firstcomposeproject.ui.theme.PostCard
+
+@Composable
+fun NewsFeedScreen(
+    paddingValues: PaddingValues,
+    onCommentClickListener: (FeedPost) -> Unit
+) {
+    val viewModel: NewsFeedViewModel = viewModel()
+    val screenState = viewModel.screenState.observeAsState(NewsFeedScreenState.Initial)
+
+    when(val currentState = screenState.value) {
+        is NewsFeedScreenState.Posts -> {
+            FeedPosts(
+                viewModel = viewModel,
+                paddingValues = paddingValues,
+                feedPosts = currentState.posts,
+                onCommentClickListener = onCommentClickListener
+            )
+        }
+        NewsFeedScreenState.Initial -> {
+
+        }
+    }
+}
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
-fun HomeScreen(
-    viewModel: MainViewModel,
-    paddingValues: PaddingValues
+private fun FeedPosts(
+    viewModel: NewsFeedViewModel,
+    paddingValues: PaddingValues,
+    feedPosts: List<FeedPost>,
+    onCommentClickListener: (FeedPost) -> Unit
 ) {
-    val feedPosts = viewModel.feedPosts.observeAsState(listOf())
-
     LazyColumn(
         modifier = Modifier.padding(paddingValues),
         contentPadding = PaddingValues(
@@ -37,7 +61,7 @@ fun HomeScreen(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(
-            items = feedPosts.value,
+            items = feedPosts,
             key = {it.id}
         ) {feedPost ->
 
@@ -59,7 +83,7 @@ fun HomeScreen(
                             viewModel.updateCount(feedPost, StatisticType.SHARES)
                         },
                         onCommentClickListener = {
-                            viewModel.updateCount(feedPost, StatisticType.COMMENTS)
+                            onCommentClickListener(feedPost)
                         },
                         onLikeClickListener = {
                             viewModel.updateCount(feedPost, StatisticType.LIKES)

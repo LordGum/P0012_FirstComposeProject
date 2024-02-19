@@ -2,6 +2,7 @@ package com.example.firstcomposeproject.domain
 
 import com.example.firstcomposeproject.R
 
+
 data class FeedPost(
     val id: Int = 0,
     val communityName: String = "/dev/null",

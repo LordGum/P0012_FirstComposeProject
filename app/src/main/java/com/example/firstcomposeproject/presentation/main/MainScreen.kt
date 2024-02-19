@@ -1,4 +1,4 @@
-package com.example.firstcomposeproject.presentation
+package com.example.firstcomposeproject.presentation.main
 
 import android.annotation.SuppressLint
 import androidx.compose.material3.BottomAppBar
@@ -15,16 +15,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.firstcomposeproject.navigation.AppNavGraph
+import com.example.firstcomposeproject.navigation.Screen
 import com.example.firstcomposeproject.navigation.rememberNavigationState
-import com.example.firstcomposeproject.presentation.main.news.HomeScreen
-import com.example.firstcomposeproject.presentation.main.MainViewModel
-import com.example.firstcomposeproject.presentation.main.NavigationItem
+import com.example.firstcomposeproject.presentation.main.comments.CommentsScreen
+import com.example.firstcomposeproject.presentation.main.news.NewsFeedScreen
+import com.example.firstcomposeproject.presentation.main.news.NewsFeedViewModel
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter", "UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun MainScreen(
-    viewModel: MainViewModel
-) {
+fun MainScreen() {
     val navigationState = rememberNavigationState()
 
     Scaffold (
@@ -34,9 +33,6 @@ fun MainScreen(
                 val navBackStackEntry by navigationState.navHostController.currentBackStackEntryAsState()
                 val currentRoute = navBackStackEntry?.destination?.route
 
-                val selectedItemPosition = remember {
-                    mutableStateOf(0)
-                }
                 val items = listOf(
                     NavigationItem.Home,
                     NavigationItem.Favorites,
@@ -60,14 +56,25 @@ fun MainScreen(
                 }
             }
         }
-    ) {paddingValues ->
+    ) { paddingValues ->
        AppNavGraph(
            navHostController = navigationState.navHostController,
-           homeScreenContent = {
-               HomeScreen(
-                   viewModel = viewModel,
-                   paddingValues = paddingValues
-               ) },
+           newsFeedScreenContent = {
+               NewsFeedScreen(
+                   paddingValues = paddingValues,
+                   onCommentClickListener = {
+                       navigationState.navigateToComments(it)
+                   }
+               )
+           },
+           commentScreenContent = {feedPost ->
+                CommentsScreen(
+                    feedPost = feedPost,
+                    backPressed = {
+                        navigationState.navHostController.popBackStack()
+                    }
+                )
+           },
            favoritesScreenContent = { Text(text = "Favorites")},
            profileScreenContent = { Text(text = "Profile")}
        )

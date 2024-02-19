@@ -21,12 +21,14 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.firstcomposeproject.domain.Comment
 import com.example.firstcomposeproject.domain.FeedPost
 
@@ -35,45 +37,53 @@ import com.example.firstcomposeproject.domain.FeedPost
 @Composable
 fun CommentsScreen(
     feedPost: FeedPost,
-    comments: List<Comment>
+    backPressed: () -> Unit
 ) {
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = "Comments for FeedPost id: 0",
-                        color = MaterialTheme.colorScheme.primary,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = { /*TODO*/ }) {
-                        Icon(
-                            imageVector = Icons.Rounded.ArrowBack,
-                            contentDescription = "Button back to Posts",
-                            tint = MaterialTheme.colorScheme.primary
+    val viewModel: CommentViewModel = viewModel(
+        factory = CommentsViewModelFactory(feedPost)
+    )
+    val screenState = viewModel.screenState.observeAsState(CommentScreenState.Initial)
+    val currentState = screenState.value
+
+    if (currentState is CommentScreenState.Comments) {
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = {
+                        Text(
+                            text = "Comments for FeedPost id: ${feedPost.id}",
+                            color = MaterialTheme.colorScheme.primary,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
                         )
+                    },
+                    navigationIcon = {
+                        IconButton(onClick = { backPressed() }) {
+                            Icon(
+                                imageVector = Icons.Rounded.ArrowBack,
+                                contentDescription = "Button back to Posts",
+                                tint = MaterialTheme.colorScheme.primary
+                            )
+                        }
                     }
+                )
+            }
+        ) { paddingValues ->
+            LazyColumn(
+                modifier = Modifier.padding(paddingValues),
+                contentPadding = PaddingValues(
+                    top = 16.dp,
+                    bottom = 72.dp,
+                    start = 8.dp,
+                    end = 8.dp
+                )
+            ) {
+                items(
+                    items = currentState.comments,
+                    key = { it.id }
+                ) { item ->
+                    Comment(item)
                 }
-            )
-        }
-    ) {paddingValues ->
-        LazyColumn(
-            modifier = Modifier.padding(paddingValues),
-            contentPadding = PaddingValues(
-                top = 16.dp,
-                bottom = 72.dp,
-                start = 8.dp,
-                end = 8.dp
-            )
-        ) {
-            items(
-                items = comments,
-                key = {it.id}
-            ) {item ->
-                Comment(item)
             }
         }
     }
