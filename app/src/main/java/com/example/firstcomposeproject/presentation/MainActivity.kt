@@ -1,4 +1,4 @@
-package com.example.firstcomposeproject
+package com.example.firstcomposeproject.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -12,7 +12,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.firstcomposeproject.ui.theme.FirstComposeProjectTheme
-import com.example.firstcomposeproject.ui.theme.MainScreen
 
 class MainActivity : ComponentActivity() {
 

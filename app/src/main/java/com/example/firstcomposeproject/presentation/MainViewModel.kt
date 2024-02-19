@@ -1,4 +1,4 @@
-package com.example.firstcomposeproject
+package com.example.firstcomposeproject.presentation
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
