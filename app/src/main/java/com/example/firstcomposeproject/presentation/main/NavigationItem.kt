@@ -1,4 +1,4 @@
-package com.example.firstcomposeproject.presentation
+package com.example.firstcomposeproject.presentation.main
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Favorite

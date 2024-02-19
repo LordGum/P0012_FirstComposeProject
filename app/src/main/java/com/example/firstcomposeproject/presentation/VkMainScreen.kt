@@ -16,6 +16,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.firstcomposeproject.navigation.AppNavGraph
 import com.example.firstcomposeproject.navigation.rememberNavigationState
+import com.example.firstcomposeproject.presentation.main.news.HomeScreen
+import com.example.firstcomposeproject.presentation.main.MainViewModel
+import com.example.firstcomposeproject.presentation.main.NavigationItem
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter", "UnusedMaterial3ScaffoldPaddingParameter")
 @Composable

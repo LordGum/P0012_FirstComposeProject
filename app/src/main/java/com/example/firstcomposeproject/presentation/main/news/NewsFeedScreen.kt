@@ -1,4 +1,4 @@
-package com.example.firstcomposeproject.presentation
+package com.example.firstcomposeproject.presentation.main.news
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
@@ -15,6 +15,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.firstcomposeproject.domain.StatisticType
+import com.example.firstcomposeproject.presentation.main.MainViewModel
 import com.example.firstcomposeproject.ui.theme.PostCard
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
