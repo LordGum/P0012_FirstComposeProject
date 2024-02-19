@@ -78,4 +78,8 @@ dependencies {
 
     //json
     implementation("com.google.code.gson:gson:2.10")
+
+    //vk sdk android
+    implementation("com.vk:android-sdk-core:4.1.0")
+    implementation("com.vk:android-sdk-api:4.1.0")
 }

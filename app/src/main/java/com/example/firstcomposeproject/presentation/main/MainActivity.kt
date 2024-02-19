@@ -1,32 +1,46 @@
 package com.example.firstcomposeproject.presentation.main
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import com.example.firstcomposeproject.presentation.main.news.NewsFeedViewModel
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.firstcomposeproject.presentation.LoginScreen
 import com.example.firstcomposeproject.ui.theme.FirstComposeProjectTheme
+import com.vk.api.sdk.VK
+import com.vk.api.sdk.auth.VKScope
 
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         setContent {
             FirstComposeProjectTheme {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(MaterialTheme.colorScheme.background)
-                        .padding(8.dp)
+                val viewModel: MainViewModel = viewModel()
+                val authState = viewModel.authState.observeAsState(AuthState.Initial)
+
+                val launcher = rememberLauncherForActivityResult(
+                    contract = VK.getVKAuthActivityResultContract()
                 ) {
-                    MainScreen()
+                    viewModel.performAuthResult(it)
+                }
+
+                when (authState.value) {
+                    is AuthState.Authorized -> {
+                        MainScreen()
+                    }
+                    is AuthState.NotAuthorized -> {
+                        LoginScreen (
+                            onLoginClick = {
+                                launcher.launch(listOf(VKScope.WALL, VKScope.FRIENDS))
+                                Log.d("MATAG", "click in button")
+                            }
+                        )
+                    }
+                    else -> {}
                 }
             }
         }
