@@ -36,7 +36,6 @@ class MainActivity : ComponentActivity() {
                         LoginScreen (
                             onLoginClick = {
                                 launcher.launch(listOf(VKScope.WALL, VKScope.FRIENDS))
-                                Log.d("MATAG", "click in button")
                             }
                         )
                     }

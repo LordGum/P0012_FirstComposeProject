@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.MoreVert
@@ -30,6 +31,7 @@ import androidx.compose.ui.unit.sp
 import com.example.firstcomposeproject.R
 import com.example.firstcomposeproject.domain.FeedPost
 import com.example.firstcomposeproject.domain.StatisticType
+import coil.compose.AsyncImage
 
 @Composable
 fun PostCard(
@@ -48,12 +50,12 @@ fun PostCard(
             color = MaterialTheme.colorScheme.onPrimary
         )
         Spacer(modifier = Modifier.height(8.dp))
-        Image(
-            painter = painterResource(id = feedPost.contentImageResId),
-            contentDescription = null,
+        AsyncImage(
+            model = feedPost.contentImageUrl,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(300.dp),
+                .wrapContentHeight(),
+            contentDescription = null,
             contentScale = ContentScale.FillWidth
         )
         Spacer(modifier = Modifier.height(8.dp))
@@ -73,13 +75,12 @@ fun PostAvatar(feedPost: FeedPost) {
         horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Image(
-            painter = painterResource(id = feedPost.avatarResId),
-            contentDescription = null,
+        AsyncImage(
+            model = feedPost.communityImageUrl,
             modifier = Modifier
-                .size(40.dp)
-                .padding(5.dp)
-                .clip(CircleShape)
+                .size(50.dp)
+                .clip(CircleShape),
+            contentDescription = null
         )
         Column(
             modifier = Modifier.padding(5.dp),
