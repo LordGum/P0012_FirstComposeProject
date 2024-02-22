@@ -10,16 +10,12 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.firstcomposeproject.navigation.AppNavGraph
-import com.example.firstcomposeproject.navigation.Screen
 import com.example.firstcomposeproject.navigation.rememberNavigationState
 import com.example.firstcomposeproject.presentation.main.comments.CommentsScreen
 import com.example.firstcomposeproject.presentation.main.news.NewsFeedScreen
-import com.example.firstcomposeproject.presentation.main.news.NewsFeedViewModel
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter", "UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -27,6 +23,7 @@ fun MainScreen() {
     val navigationState = rememberNavigationState()
 
     Scaffold (
+        containerColor = MaterialTheme.colorScheme.onSecondary,
         bottomBar = {
             BottomAppBar {
 

@@ -1,7 +1,8 @@
 package com.example.firstcomposeproject.domain
 
 data class FeedPost(
-    val id: String,
+    val id: Long,
+    val communityId: Long,
     val communityName: String = "/dev/null",
     val publicationDate: String = "14:00",
     val communityImageUrl: String,
@@ -12,5 +13,6 @@ data class FeedPost(
         StatisticType.LIKES to 444,
         StatisticType.SHARES to 222,
         StatisticType.COMMENTS to 333
-    )
+    ),
+    val isLiked: Boolean
 )

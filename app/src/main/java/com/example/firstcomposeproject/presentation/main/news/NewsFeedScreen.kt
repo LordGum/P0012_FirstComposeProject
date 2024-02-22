@@ -3,6 +3,8 @@ package com.example.firstcomposeproject.presentation.main.news
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -16,8 +18,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.firstcomposeproject.domain.FeedPost
-import com.example.firstcomposeproject.domain.StatisticType
-import com.example.firstcomposeproject.ui.theme.PostCard
 
 @Composable
 fun NewsFeedScreen(
@@ -76,19 +76,14 @@ private fun FeedPosts(
                 dismissContent = {
                     PostCard(
                         feedPost = feedPost,
-                        onViewClickListener = {
-                            viewModel.updateCount(feedPost, StatisticType.VIEWS)
-                        },
-                        onShareClickListener = {
-                            viewModel.updateCount(feedPost, StatisticType.SHARES)
-                        },
                         onCommentClickListener = {
                             onCommentClickListener(feedPost)
                         },
                         onLikeClickListener = {
-                            viewModel.updateCount(feedPost, StatisticType.LIKES)
+                            viewModel.changeLikeStatus(feedPost)
                         }
                     )
+                    Spacer(modifier = Modifier.height(8.dp))
                 }
             )
         }

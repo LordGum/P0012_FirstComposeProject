@@ -3,7 +3,7 @@ package com.example.firstcomposeproject.data.model
 import com.google.gson.annotations.SerializedName
 
 data class PostDto(
-    @SerializedName("id") val id: String,
+    @SerializedName("id") val id: Long,
     @SerializedName("source_id") val communityId: Long,
 
     @SerializedName("date") val date: Long,
@@ -15,4 +15,5 @@ data class PostDto(
     @SerializedName("reposts") val reposts: RepostDto,
     @SerializedName("views") val views: ViewDto,
 
+    @SerializedName("is_favourite") val isFavourite: Boolean
 )
