@@ -1,6 +1,6 @@
 package com.example.firstcomposeproject.presentation.main.comments
 
-import com.example.firstcomposeproject.domain.Comment
+import com.example.firstcomposeproject.domain.PostComment
 import com.example.firstcomposeproject.domain.FeedPost
 
 sealed class CommentScreenState{
@@ -8,6 +8,7 @@ sealed class CommentScreenState{
 
     data class Comments(
         val feedPost: FeedPost,
-        val comments: List<Comment>
+        val comments: List<PostComment>
     ): CommentScreenState()
+
 }

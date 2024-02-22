@@ -1,5 +1,6 @@
 package com.example.firstcomposeproject.presentation.main.comments
 
+import android.app.Application
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -24,12 +25,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.ColorPainter
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.firstcomposeproject.domain.Comment
+import coil.compose.AsyncImage
+import com.example.firstcomposeproject.R
+import com.example.firstcomposeproject.domain.PostComment
 import com.example.firstcomposeproject.domain.FeedPost
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -40,7 +43,10 @@ fun CommentsScreen(
     backPressed: () -> Unit
 ) {
     val viewModel: CommentViewModel = viewModel(
-        factory = CommentsViewModelFactory(feedPost)
+        factory = CommentViewModelFactory(
+            feedPost,
+            LocalContext.current.applicationContext as Application
+        )
     )
     val screenState = viewModel.screenState.observeAsState(CommentScreenState.Initial)
     val currentState = screenState.value
@@ -51,7 +57,7 @@ fun CommentsScreen(
                 TopAppBar(
                     title = {
                         Text(
-                            text = "Comments for FeedPost id: ${feedPost.id}",
+                            text = stringResource(R.string.comments),
                             color = MaterialTheme.colorScheme.primary,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis
@@ -61,7 +67,7 @@ fun CommentsScreen(
                         IconButton(onClick = { backPressed() }) {
                             Icon(
                                 imageVector = Icons.Rounded.ArrowBack,
-                                contentDescription = "Button back to Posts",
+                                contentDescription = stringResource(R.string.button_back_to_posts),
                                 tint = MaterialTheme.colorScheme.primary
                             )
                         }
@@ -90,19 +96,19 @@ fun CommentsScreen(
 }
 
 @Composable
-private fun Comment(comment: Comment) {
+private fun Comment(comment: PostComment) {
 
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 8.dp)
         ) {
-            Icon(
+            AsyncImage(
                 modifier = Modifier
-                    .padding(top = 8.dp)
+                    .size(48.dp)
                     .clip(CircleShape)
-                    .size(35.dp),
-                painter = ColorPainter(Color.Cyan),
+                ,
+                model = comment.authorAvatarUrl,
                 contentDescription = null
             )
             Spacer(modifier = Modifier.width(8.dp))
@@ -114,12 +120,12 @@ private fun Comment(comment: Comment) {
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = comment.contentText,
+                    text = comment.commentText,
                     color = MaterialTheme.colorScheme.primary
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = comment.time,
+                    text = comment.publicationDate,
                     color = MaterialTheme.colorScheme.secondary
                 )
             }

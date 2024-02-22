@@ -8,4 +8,6 @@
 
     <string name="context_text">"lolololololololololololololololololoolooololo \n" +
             " lolololololololololololololololololoolooololo"</string>
+    <string name="comments">Комментарии</string>
+    <string name="button_back_to_posts">Button back to Posts</string>
 </resources>

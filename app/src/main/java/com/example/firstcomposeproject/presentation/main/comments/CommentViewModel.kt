@@ -1,14 +1,19 @@
 package com.example.firstcomposeproject.presentation.main.comments
 
+import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.firstcomposeproject.domain.Comment
+import androidx.lifecycle.viewModelScope
+import com.example.firstcomposeproject.data.repositories.NewsFeedRepository
 import com.example.firstcomposeproject.domain.FeedPost
+import kotlinx.coroutines.launch
 
 class CommentViewModel(
-    feedPost: FeedPost
+    feedPost: FeedPost,
+    application: Application
 ): ViewModel() {
+    private val repository = NewsFeedRepository(application)
 
     private val _screenState = MutableLiveData<CommentScreenState>(CommentScreenState.Initial)
     val screenState: LiveData<CommentScreenState> = _screenState
@@ -19,14 +24,12 @@ class CommentViewModel(
 
 
     private fun loadComments(feedPost: FeedPost) {
-        val comments = mutableListOf<Comment>().apply {
-            repeat(10) {
-                add(Comment(id = it))
-            }
+        viewModelScope.launch {
+            val comments = repository.getComments(feedPost)
+            _screenState.value = CommentScreenState.Comments(
+                feedPost = feedPost,
+                comments = comments
+            )
         }
-        _screenState.value = CommentScreenState.Comments (
-            feedPost = feedPost,
-            comments = comments
-        )
     }
 }
