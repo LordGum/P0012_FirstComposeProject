@@ -2,22 +2,28 @@ package com.example.firstcomposeproject.presentation.main.news
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DismissDirection
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SwipeToDismiss
 import androidx.compose.material3.rememberDismissState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.firstcomposeproject.domain.FeedPost
+import com.example.firstcomposeproject.ui.theme.DarkBlue
 
 @Composable
 fun NewsFeedScreen(
@@ -32,12 +38,18 @@ fun NewsFeedScreen(
             FeedPosts(
                 viewModel = viewModel,
                 paddingValues = paddingValues,
-                feedPosts = currentState.posts,
-                onCommentClickListener = onCommentClickListener
+                posts = currentState.posts,
+                onCommentClickListener = onCommentClickListener,
+                nextDataIsLoading = currentState.nextDataIsLoading
             )
         }
-        NewsFeedScreenState.Initial -> {
-
+        NewsFeedScreenState.Initial -> {}
+        NewsFeedScreenState.Loading -> {
+            Box(
+                modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator(color = DarkBlue)
+            }
         }
     }
 }
@@ -47,32 +59,28 @@ fun NewsFeedScreen(
 private fun FeedPosts(
     viewModel: NewsFeedViewModel,
     paddingValues: PaddingValues,
-    feedPosts: List<FeedPost>,
-    onCommentClickListener: (FeedPost) -> Unit
+    posts: List<FeedPost>,
+    onCommentClickListener: (FeedPost) -> Unit,
+    nextDataIsLoading: Boolean
 ) {
     LazyColumn(
         modifier = Modifier.padding(paddingValues),
         contentPadding = PaddingValues(
-            top = 16.dp,
-            start = 8.dp,
-            end = 8.dp,
-            bottom = 16.dp
+            top = 16.dp, start = 8.dp, end = 8.dp, bottom = 16.dp
         ),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        items(
-            items = feedPosts,
-            key = {it.id}
-        ) {feedPost ->
-
+        items(items = posts, key = { it.id }) { feedPost ->
             val dismissState = rememberDismissState()
-            if(dismissState.isDismissed(DismissDirection.EndToStart)) viewModel.delete(feedPost)
+            if (dismissState.isDismissed(DismissDirection.EndToStart)) {
+                viewModel.delete(feedPost)
+            }
 
             SwipeToDismiss(
                 modifier = Modifier.animateItemPlacement(),
                 state = dismissState,
-                directions = setOf(DismissDirection.EndToStart),
                 background = {},
+                directions = setOf(DismissDirection.EndToStart),
                 dismissContent = {
                     PostCard(
                         feedPost = feedPost,
@@ -83,9 +91,25 @@ private fun FeedPosts(
                             viewModel.changeLikeStatus(feedPost)
                         }
                     )
-                    Spacer(modifier = Modifier.height(8.dp))
                 }
             )
+        }
+        item {
+            if (nextDataIsLoading) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight()
+                        .padding(16.dp),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    CircularProgressIndicator(color = DarkBlue)
+                }
+            } else {
+                SideEffect {
+                    viewModel.loadNextRecommendations()
+                }
+            }
         }
     }
 }

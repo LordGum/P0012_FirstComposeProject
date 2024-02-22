@@ -163,7 +163,7 @@ fun PostBottom(
                     onItemClickListener = {
                         onLikeClickListener(StatisticType.LIKES)
                     },
-                    tint = if (isFavourite) DarkRed else MaterialTheme.colorScheme.onSecondary
+                    tint = if (isFavourite) DarkRed else MaterialTheme.colorScheme.onPrimary
                 )
             }
         }
