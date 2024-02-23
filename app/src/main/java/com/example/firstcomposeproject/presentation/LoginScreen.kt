@@ -25,7 +25,6 @@ import com.example.firstcomposeproject.ui.theme.DarkBlue
 fun LoginScreen(
     onLoginClick: () -> Unit
 ) {
-
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center

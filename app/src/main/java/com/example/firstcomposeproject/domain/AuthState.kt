@@ -1,7 +1,10 @@
-package com.example.firstcomposeproject.presentation.main
+package com.example.firstcomposeproject.domain
 
 sealed class AuthState {
+
     object Authorized: AuthState()
+
     object NotAuthorized: AuthState()
+
     object Initial: AuthState()
 }

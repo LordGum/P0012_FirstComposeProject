@@ -22,7 +22,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
@@ -32,8 +32,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.example.firstcomposeproject.R
-import com.example.firstcomposeproject.domain.PostComment
 import com.example.firstcomposeproject.domain.FeedPost
+import com.example.firstcomposeproject.domain.PostComment
 
 @OptIn(ExperimentalMaterial3Api::class)
 
@@ -48,7 +48,7 @@ fun CommentsScreen(
             LocalContext.current.applicationContext as Application
         )
     )
-    val screenState = viewModel.screenState.observeAsState(CommentScreenState.Initial)
+    val screenState = viewModel.screenState.collectAsState(CommentScreenState.Initial)
     val currentState = screenState.value
 
     if (currentState is CommentScreenState.Comments) {
@@ -112,8 +112,7 @@ private fun Comment(comment: PostComment) {
                 contentDescription = null
             )
             Spacer(modifier = Modifier.width(8.dp))
-            Column(
-            ) {
+            Column {
                 Text(
                     text = comment.authorName,
                     color = MaterialTheme.colorScheme.primary

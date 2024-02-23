@@ -100,7 +100,7 @@ fun PostAvatar(feedPost: FeedPost) {
             )
             Text(
                 text = feedPost.publicationDate,
-                color = MaterialTheme.colorScheme.onSecondary,
+                color = MaterialTheme.colorScheme.onPrimary,
                 fontWeight = FontWeight.Normal,
                 fontSize = 16.sp
             )
