@@ -6,7 +6,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.firstcomposeproject.domain.AuthState
+import com.example.firstcomposeproject.domain.entities.AuthState
 import com.example.firstcomposeproject.presentation.LoginScreen
 import com.example.firstcomposeproject.ui.theme.FirstComposeProjectTheme
 import com.vk.api.sdk.VK

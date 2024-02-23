@@ -32,8 +32,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.example.firstcomposeproject.R
-import com.example.firstcomposeproject.domain.FeedPost
-import com.example.firstcomposeproject.domain.PostComment
+import com.example.firstcomposeproject.domain.entities.FeedPost
+import com.example.firstcomposeproject.domain.entities.PostComment
 
 @OptIn(ExperimentalMaterial3Api::class)
 

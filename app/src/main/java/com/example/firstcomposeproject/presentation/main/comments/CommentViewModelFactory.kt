@@ -3,7 +3,7 @@ package com.example.firstcomposeproject.presentation.main.comments
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.firstcomposeproject.domain.FeedPost
+import com.example.firstcomposeproject.domain.entities.FeedPost
 
 
 class CommentViewModelFactory(

@@ -31,8 +31,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.firstcomposeproject.R
-import com.example.firstcomposeproject.domain.FeedPost
-import com.example.firstcomposeproject.domain.StatisticType
+import com.example.firstcomposeproject.domain.entities.FeedPost
+import com.example.firstcomposeproject.domain.entities.StatisticType
 import com.example.firstcomposeproject.ui.theme.DarkRed
 
 @Composable

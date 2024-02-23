@@ -1,12 +1,16 @@
 package com.example.firstcomposeproject.presentation.main.news
 
-import com.example.firstcomposeproject.domain.FeedPost
+import com.example.firstcomposeproject.domain.entities.FeedPost
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.firstcomposeproject.data.extensions.mergeWith
-import com.example.firstcomposeproject.data.repositories.NewsFeedRepository
+import com.example.firstcomposeproject.data.repositories.NewsFeedRepositoryImpl
+import com.example.firstcomposeproject.domain.usecases.ChangeLikeStatusUseCase
+import com.example.firstcomposeproject.domain.usecases.DeletePostUseCase
+import com.example.firstcomposeproject.domain.usecases.GetRecommendationsUseCase
+import com.example.firstcomposeproject.domain.usecases.LoadNextDataUseCase
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.filter
@@ -20,9 +24,15 @@ class NewsFeedViewModel(application: Application) : AndroidViewModel(application
         Log.d("NewsFeedViewModel", "Exception caught by exception handler")
     }
 
-    private val repository = NewsFeedRepository(application)
+    private val repository = NewsFeedRepositoryImpl(application)
 
-    private val recommendationsFlow = repository.recommendations
+    private val getRecommendationsUseCase = GetRecommendationsUseCase(repository)
+    private val loadNextDataUseCase = LoadNextDataUseCase(repository)
+    private val changeLikeStatusUseCase = ChangeLikeStatusUseCase(repository)
+    private val deletePostUseCase = DeletePostUseCase(repository)
+
+
+    private val recommendationsFlow = getRecommendationsUseCase()
 
     private val loadNextDataFlow = MutableSharedFlow<NewsFeedScreenState>()
 

@@ -1,6 +1,6 @@
 package com.example.firstcomposeproject.presentation.main.news
 
-import com.example.firstcomposeproject.domain.FeedPost
+import com.example.firstcomposeproject.domain.entities.FeedPost
 
 sealed class NewsFeedScreenState {
     object Initial: NewsFeedScreenState()

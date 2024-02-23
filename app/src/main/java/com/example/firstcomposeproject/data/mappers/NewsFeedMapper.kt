@@ -2,9 +2,9 @@ package com.example.firstcomposeproject.data.mappers
 
 import com.example.firstcomposeproject.data.model.CommentsResponseDto
 import com.example.firstcomposeproject.data.model.NewsFeedResponseDto
-import com.example.firstcomposeproject.domain.FeedPost
-import com.example.firstcomposeproject.domain.PostComment
-import com.example.firstcomposeproject.domain.StatisticType
+import com.example.firstcomposeproject.domain.entities.FeedPost
+import com.example.firstcomposeproject.domain.entities.PostComment
+import com.example.firstcomposeproject.domain.entities.StatisticType
 import java.sql.Date
 import java.text.SimpleDateFormat
 import java.util.Locale
