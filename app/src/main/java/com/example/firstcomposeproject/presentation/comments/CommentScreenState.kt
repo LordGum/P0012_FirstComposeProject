@@ -1,7 +1,7 @@
-package com.example.firstcomposeproject.presentation.main.comments
+package com.example.firstcomposeproject.presentation.comments
 
-import com.example.firstcomposeproject.domain.entities.PostComment
 import com.example.firstcomposeproject.domain.entities.FeedPost
+import com.example.firstcomposeproject.domain.entities.PostComment
 
 sealed class CommentScreenState{
     object Initial : CommentScreenState()

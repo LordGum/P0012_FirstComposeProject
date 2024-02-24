@@ -1,4 +1,4 @@
-package com.example.firstcomposeproject.presentation.main.news
+package com.example.firstcomposeproject.presentation.news
 
 import com.example.firstcomposeproject.domain.entities.FeedPost
 

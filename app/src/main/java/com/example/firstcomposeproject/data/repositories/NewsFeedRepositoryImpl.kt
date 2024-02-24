@@ -1,29 +1,36 @@
 package com.example.firstcomposeproject.data.repositories
 
-import android.app.Application
-import android.util.Log
+import com.example.firstcomposeproject.data.extensions.mergeWith
 import com.example.firstcomposeproject.data.mappers.NewsFeedMapper
-import com.example.firstcomposeproject.data.network.ApiFactory
+import com.example.firstcomposeproject.data.network.ApiService
+import com.example.firstcomposeproject.domain.Repository
+import com.example.firstcomposeproject.domain.entities.AuthState
 import com.example.firstcomposeproject.domain.entities.FeedPost
 import com.example.firstcomposeproject.domain.entities.PostComment
 import com.example.firstcomposeproject.domain.entities.StatisticType
-import com.example.firstcomposeproject.data.extensions.mergeWith
-import com.example.firstcomposeproject.domain.Repository
-import com.example.firstcomposeproject.domain.entities.AuthState
 import com.vk.api.sdk.VKPreferencesKeyValueStorage
 import com.vk.api.sdk.auth.VKAccessToken
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.retry
+import kotlinx.coroutines.flow.stateIn
+import javax.inject.Inject
 
-class NewsFeedRepositoryImpl(application: Application): Repository {
-
-    private val storage = VKPreferencesKeyValueStorage(application)
-    private val token
-        get() = VKAccessToken.restore(storage)
+class NewsFeedRepositoryImpl@Inject constructor(
+    private val apiService: ApiService,
+    private val mapper: NewsFeedMapper,
+    private val storage: VKPreferencesKeyValueStorage,
+) : Repository {
 
     private val coroutineScope = CoroutineScope(Dispatchers.Default)
+
+    private val token
+        get() = VKAccessToken.restore(storage)
 
     private val nextDataNeededEvents = MutableSharedFlow<Unit>(replay = 1)
     private val refreshedListFlow = MutableSharedFlow<List<FeedPost>>()
@@ -52,9 +59,6 @@ class NewsFeedRepositoryImpl(application: Application): Repository {
         true
     }
 
-    private val apiService = ApiFactory.apiService
-    private val mapper = NewsFeedMapper()
-
     private val _feedPosts = mutableListOf<FeedPost>()
     private val feedPosts: List<FeedPost>
         get() = _feedPosts.toList()
@@ -68,7 +72,6 @@ class NewsFeedRepositoryImpl(application: Application): Repository {
         checkAuthStateEvents.collect {
             val currentToken = token
             val loggedIn = currentToken != null && currentToken.isValid
-            Log.d("MATAG", "collect log is $loggedIn")
             val authState = if (loggedIn) AuthState.Authorized else AuthState.NotAuthorized
             emit(authState)
         }
@@ -95,7 +98,6 @@ class NewsFeedRepositoryImpl(application: Application): Repository {
     }
 
     override suspend fun checkAuthState() {
-        Log.d("MATAG", "check auth")
         checkAuthStateEvents.emit(Unit)
     }
 

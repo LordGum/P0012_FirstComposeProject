@@ -11,7 +11,7 @@ import com.google.gson.Gson
 
 fun NavGraphBuilder.homeScreenGraph(
     newsFeedScreenContent: @Composable () -> Unit,
-    commentsScreenContent: @Composable (FeedPost) -> Unit
+    commentScreenContent: @Composable (FeedPost) -> Unit
 ) {
     navigation(
         startDestination = Screen.NewsFeed.route,
@@ -31,7 +31,7 @@ fun NavGraphBuilder.homeScreenGraph(
         ) {
             val feedPostJson = it.arguments?.getString(Screen.KEY_FEED_POST) ?: ""
             val feedPost = Gson().fromJson(feedPostJson, FeedPost::class.java)
-            commentsScreenContent(feedPost)
+            commentScreenContent(feedPost)
         }
     }
 }

@@ -1,6 +1,5 @@
-package com.example.firstcomposeproject.presentation.main.comments
+package com.example.firstcomposeproject.presentation.comments
 
-import android.app.Application
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -34,20 +33,21 @@ import coil.compose.AsyncImage
 import com.example.firstcomposeproject.R
 import com.example.firstcomposeproject.domain.entities.FeedPost
 import com.example.firstcomposeproject.domain.entities.PostComment
+import com.example.firstcomposeproject.presentation.NewsFeedApplication
 
 @OptIn(ExperimentalMaterial3Api::class)
 
 @Composable
-fun CommentsScreen(
+fun CommentScreen(
     feedPost: FeedPost,
     backPressed: () -> Unit
 ) {
-    val viewModel: CommentViewModel = viewModel(
-        factory = CommentViewModelFactory(
-            feedPost,
-            LocalContext.current.applicationContext as Application
-        )
-    )
+    val component = (LocalContext.current.applicationContext as NewsFeedApplication)
+        .component
+        .getCommentsScreenComponentFactory()
+        .create(feedPost)
+
+    val viewModel: CommentViewModel = viewModel(factory = component.getViewModelFactory())
     val screenState = viewModel.screenState.collectAsState(CommentScreenState.Initial)
     val currentState = screenState.value
 

@@ -21,7 +21,7 @@ fun AppNavGraph(
 
         homeScreenGraph(
             newsFeedScreenContent = newsFeedScreenContent,
-            commentsScreenContent = commentScreenContent
+            commentScreenContent = commentScreenContent
         )
         composable(Screen.Favorites.route) {
             favoritesScreenContent()

@@ -1,26 +1,22 @@
 package com.example.firstcomposeproject.presentation.main
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.firstcomposeproject.data.repositories.NewsFeedRepositoryImpl
 import com.example.firstcomposeproject.domain.usecases.CheckAuthStateUseCase
 import com.example.firstcomposeproject.domain.usecases.GetAuthStateUseCase
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MainViewModel(application: Application): AndroidViewModel(application) {
-
-    private val repository = NewsFeedRepositoryImpl(application)
-
-
-    private val getAuthStateFlowUseCase = GetAuthStateUseCase(repository)
-    private val checkAuthStateUseCase = CheckAuthStateUseCase(repository)
+class MainViewModel @Inject constructor(
+    private val getAuthStateFlowUseCase: GetAuthStateUseCase,
+    private val checkAuthStateUseCase: CheckAuthStateUseCase,
+) : ViewModel() {
 
     val authState = getAuthStateFlowUseCase()
 
     fun performAuthResult() {
         viewModelScope.launch {
-            repository.checkAuthState()
+            checkAuthStateUseCase()
         }
     }
 }

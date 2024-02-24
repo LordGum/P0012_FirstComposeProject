@@ -1,6 +1,7 @@
 package com.example.firstcomposeproject.presentation.main
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -14,12 +15,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.firstcomposeproject.navigation.AppNavGraph
 import com.example.firstcomposeproject.navigation.rememberNavigationState
-import com.example.firstcomposeproject.presentation.main.comments.CommentsScreen
-import com.example.firstcomposeproject.presentation.main.news.NewsFeedScreen
+import com.example.firstcomposeproject.presentation.ViewModelFactory
+import com.example.firstcomposeproject.presentation.comments.CommentScreen
+import com.example.firstcomposeproject.presentation.news.NewsFeedScreen
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter", "UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun MainScreen() {
+fun MainScreen(viewModelFactory: ViewModelFactory) {
     val navigationState = rememberNavigationState()
 
     Scaffold (
@@ -58,6 +60,7 @@ fun MainScreen() {
            navHostController = navigationState.navHostController,
            newsFeedScreenContent = {
                NewsFeedScreen(
+                   viewModelFactory = viewModelFactory,
                    paddingValues = paddingValues,
                    onCommentClickListener = {
                        navigationState.navigateToComments(it)
@@ -65,7 +68,8 @@ fun MainScreen() {
                )
            },
            commentScreenContent = {feedPost ->
-                CommentsScreen(
+               Log.d("MATAG", "feedPost = $feedPost")
+                CommentScreen(
                     feedPost = feedPost,
                     backPressed = {
                         navigationState.navHostController.popBackStack()

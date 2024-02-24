@@ -1,4 +1,4 @@
-package com.example.firstcomposeproject.presentation
+package com.example.firstcomposeproject.presentation.main
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.firstcomposeproject.R
 import com.example.firstcomposeproject.ui.theme.DarkBlue
@@ -48,7 +49,7 @@ fun LoginScreen(
                 ),
                 onClick = { onLoginClick() }
             ) {
-                Text(text = "Войти")
+                Text(text = stringResource(R.string.enter))
             }
         }
     }

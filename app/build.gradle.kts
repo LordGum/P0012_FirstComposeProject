@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("kotlin-kapt")
 }
 
 android {
@@ -40,7 +41,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.3"
+        kotlinCompilerExtensionVersion = "1.5.0"
     }
     packaging {
         resources {
@@ -68,7 +69,7 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
     //for observeAsState
-    implementation("androidx.compose.runtime:runtime-livedata:1.6.1")
+    implementation("androidx.compose.runtime:runtime-livedata:1.6.2")
 
     //navigation
     implementation("androidx.navigation:navigation-compose:2.7.7")
@@ -89,4 +90,8 @@ dependencies {
 
     //coil
     implementation("io.coil-kt:coil-compose:2.1.0")
+
+    //dagger2
+    implementation("com.google.dagger:dagger:2.47")
+    kapt("com.google.dagger:dagger-compiler:2.47")
 }
